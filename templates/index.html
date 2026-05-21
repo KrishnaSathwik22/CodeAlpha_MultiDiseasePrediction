@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthLens | Multi-Disease Prediction Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Modern Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                <h1 class="logo-text">HealthLens</h1>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="heart-form-container" data-theme="theme-heart">
+                    <i class="fa-solid fa-heart"></i> Heart Disease
+                </button>
+                <button class="nav-item" data-target="diabetes-form-container" data-theme="theme-diabetes">
+                    <i class="fa-solid fa-tint"></i> Diabetes
+                </button>
+                <button class="nav-item" data-target="cancer-form-container" data-theme="theme-cancer">
+                    <i class="fa-solid fa-ribbon"></i> Breast Cancer
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="{{ url_for('logout') }}" class="logout-btn"><i class="fa-solid fa-sign-out-alt"></i> Logout</a>
+                <p style="margin-top: 1rem;">&copy; 2026 HealthLens AI</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-header">
+                <h2>Predictive Analysis Dashboard</h2>
+                <div class="user-profile">
+                    <span style="margin-right: 15px; font-weight: 500;">Dr. {{ username }}</span>
+                    <img src="https://ui-avatars.com/api/?name={{ username }}&background=random" alt="User" class="avatar">
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- HEART DISEASE FORM -->
+                <div id="heart-form-container" class="form-section active-section">
+                    <div class="section-header">
+                        <h3>Heart Disease Risk Assessment</h3>
+                        <p>Enter patient vitals to evaluate cardiovascular risk factors.</p>
+                    </div>
+                    <form id="heart-form" class="prediction-form" data-disease="heart">
+                        <div class="form-grid">
+                            <!-- Selected important features for UI (will send default 0s for missing in predict.py or require all) -->
+                            <!-- Note: UCI heart dataset has 13 features. We'll simplify the UI and send dummy 0s for others, OR list the important ones -->
+                            <!-- To be professional, we should list the ones users know. age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal -->
+                            <div class="input-group">
+                                <label>Age</label>
+                                <input type="number" name="age" required placeholder="e.g., 45">
+                            </div>
+                            <div class="input-group">
+                                <label>Sex (1=M, 0=F)</label>
+                                <input type="number" name="sex" min="0" max="1" required placeholder="e.g., 1">
+                            </div>
+                            <div class="input-group">
+                                <label>Chest Pain Type (0-3)</label>
+                                <input type="number" name="cp" required placeholder="e.g., 2">
+                            </div>
+                            <div class="input-group">
+                                <label>Resting Blood Pressure</label>
+                                <input type="number" name="trestbps" required placeholder="e.g., 120">
+                            </div>
+                            <div class="input-group">
+                                <label>Cholesterol (mg/dl)</label>
+                                <input type="number" name="chol" required placeholder="e.g., 200">
+                            </div>
+                            <div class="input-group">
+                                <label>Max Heart Rate</label>
+                                <input type="number" name="thalach" required placeholder="e.g., 150">
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn"><i class="fa-solid fa-microscope"></i> Analyze Vitals</button>
+                    </form>
+                </div>
+
+                <!-- DIABETES FORM -->
+                <div id="diabetes-form-container" class="form-section">
+                    <div class="section-header">
+                        <h3>Diabetes Onset Prediction</h3>
+                        <p>Evaluate diabetes risk based on metabolic metrics.</p>
+                    </div>
+                    <form id="diabetes-form" class="prediction-form" data-disease="diabetes">
+                        <div class="form-grid">
+                            <div class="input-group">
+                                <label>Pregnancies</label>
+                                <input type="number" name="Pregnancies" required placeholder="e.g., 1">
+                            </div>
+                            <div class="input-group">
+                                <label>Glucose</label>
+                                <input type="number" name="Glucose" required placeholder="e.g., 120">
+                            </div>
+                            <div class="input-group">
+                                <label>Blood Pressure</label>
+                                <input type="number" name="BloodPressure" required placeholder="e.g., 70">
+                            </div>
+                            <div class="input-group">
+                                <label>Skin Thickness</label>
+                                <input type="number" name="SkinThickness" required placeholder="e.g., 20">
+                            </div>
+                            <div class="input-group">
+                                <label>Insulin</label>
+                                <input type="number" name="Insulin" required placeholder="e.g., 85">
+                            </div>
+                            <div class="input-group">
+                                <label>BMI</label>
+                                <input type="number" step="0.1" name="BMI" required placeholder="e.g., 25.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Diabetes Pedigree Func</label>
+                                <input type="number" step="0.01" name="DiabetesPedigreeFunction" required placeholder="e.g., 0.5">
+                            </div>
+                            <div class="input-group">
+                                <label>Age</label>
+                                <input type="number" name="Age" required placeholder="e.g., 35">
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn"><i class="fa-solid fa-microscope"></i> Analyze Metrics</button>
+                    </form>
+                </div>
+
+                <!-- BREAST CANCER FORM -->
+                <div id="cancer-form-container" class="form-section">
+                    <div class="section-header">
+                        <h3>Breast Cancer Detection</h3>
+                        <p>Cytological feature analysis for tumor classification.</p>
+                    </div>
+                    <form id="cancer-form" class="prediction-form" data-disease="cancer">
+                        <div class="form-grid">
+                            <!-- Breast cancer has 30 features. We will only ask for the mean ones (first 10) for UI simplicity -->
+                            <div class="input-group">
+                                <label>Mean Radius</label>
+                                <input type="number" step="0.01" name="mean radius" required placeholder="e.g., 14.0">
+                            </div>
+                            <div class="input-group">
+                                <label>Mean Texture</label>
+                                <input type="number" step="0.01" name="mean texture" required placeholder="e.g., 19.0">
+                            </div>
+                            <div class="input-group">
+                                <label>Mean Perimeter</label>
+                                <input type="number" step="0.01" name="mean perimeter" required placeholder="e.g., 90.0">
+                            </div>
+                            <div class="input-group">
+                                <label>Mean Area</label>
+                                <input type="number" step="0.01" name="mean area" required placeholder="e.g., 600.0">
+                            </div>
+                            <div class="input-group">
+                                <label>Mean Smoothness</label>
+                                <input type="number" step="0.01" name="mean smoothness" required placeholder="e.g., 0.1">
+                            </div>
+                            <div class="input-group">
+                                <label>Mean Compactness</label>
+                                <input type="number" step="0.01" name="mean compactness" required placeholder="e.g., 0.1">
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn"><i class="fa-solid fa-microscope"></i> Analyze Cytology</button>
+                    </form>
+                </div>
+
+                <!-- RESULTS PANEL -->
+                <div id="result-panel" class="result-panel hidden">
+                    <div class="result-card">
+                        <div class="result-icon">
+                            <i id="result-icon-fa" class="fa-solid fa-circle-notch fa-spin"></i>
+                        </div>
+                        <div class="result-content">
+                            <h4 id="result-title">Processing...</h4>
+                            <p id="result-probability">Confidence: --%</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
